@@ -8,6 +8,14 @@ pipeline {
             description: 'Select the action to perform'
         )
     }
+     stages {
+
+        stage('Clean') {
+            steps {
+                cleanWs()
+            }
+        }
+
     stages {
         stage('Checkout') {
             steps {
