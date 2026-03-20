@@ -1,11 +1,10 @@
 pipeline {
 agent any
 
-```
 parameters {
     choice(
         name: 'ACTION',
-        choices: ['plan', 'apply'],
+        choices: "plan\napply",
         description: 'Select the action to perform'
     )
 }
@@ -49,12 +48,10 @@ stages {
                 switch (params.ACTION) {
 
                     case 'plan':
-                        echo 'Executing Plan...'
                         sh 'terraform plan'
                         break
 
                     case 'apply':
-                        echo 'Executing Apply...'
                         sh 'terraform apply -auto-approve'
                         break
 
@@ -65,8 +62,5 @@ stages {
             }
         }
     }
-
-}
-```
 
 }
