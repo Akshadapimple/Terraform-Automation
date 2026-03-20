@@ -53,7 +53,7 @@ stages {
 
                     case 'apply':
                         sh 'terraform apply -auto-approve'
-                    -lock=false
+                    
                         break
 
                     default:
