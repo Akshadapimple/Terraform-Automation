@@ -42,7 +42,7 @@ resource "aws_security_group" "jenkins-sg-2022" {
   }
 }
 
-resource "aws_instance" "myFirstInstance" {
+resource "aws_instance" "my-ec2-instance" {
   ami           = var.ami_id
   key_name = var.key_name
   instance_type = var.instance_type
