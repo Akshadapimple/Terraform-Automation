@@ -63,7 +63,7 @@ resource "aws_instance" "my-ec2-instance" {
 # Create Elastic IP address
 resource "aws_eip" "myFirstInstance" {
  // vpc      = true
-  instance = aws_instance.myFirstInstance.id
+  instance = aws_instance.my-ec2-instance.id
 tags= {
     Name = "my_elastic_ip"
   }
