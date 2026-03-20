@@ -1,60 +1,72 @@
 pipeline {
-    agent any
+agent any
 
-    parameters {
-        choice(
-            name: 'ACTION',
-            choices: ['plan', 'apply'],
-            description: 'Select the action to perform'
-        )
+```
+parameters {
+    choice(
+        name: 'ACTION',
+        choices: ['plan', 'apply'],
+        description: 'Select the action to perform'
+    )
+}
+
+stages {
+
+    stage('Clean') {
+        steps {
+            cleanWs()
+        }
     }
 
-    stages {
-
-        stage('Clean') {
-            steps {
-                cleanWs()
-            }
+    stage('Checkout') {
+        steps {
+            checkout scmGit(
+                branches: [[name: '*/main']],
+                extensions: [],
+                userRemoteConfigs: [[url: 'https://github.com/Akshadapimple/Terraform-Automation.git']]
+            )
         }
+    }
 
-        stage('Checkout') {
-            steps {
-                checkout scmGit(
-                    branches: [[name: '*/main']],
-                    extensions: [],
-                    userRemoteConfigs: [[url: 'https://github.com/ygminds73/Terraform-Automation.git']]
-                )
-            }
+    stage('Terraform Init') {
+        steps {
+            sh '''
+            rm -rf .terraform
+            rm -f terraform.tfstate
+            rm -f terraform.tfstate.backup
+
+            export AWS_DEFAULT_REGION=us-east-1
+
+            terraform init -reconfigure -migrate-state
+            '''
         }
+    }
 
-        stage('Terraform Init') {
-            steps {
-                sh 'rm -rf .terraform'
-                sh 'terraform init -reconfigure'
-            }
-        }
+    stage('Action') {
+        steps {
+            script {
 
-        stage('Action') {
-            steps {
-                script {
-                    switch (params.ACTION) {
+                switch (params.ACTION) {
 
-                        case 'plan':
-                            echo 'Executing Plan...'
-                            sh 'terraform plan'
-                            break
+                    case 'plan':
+                        echo 'Executing Plan...'
+                        sh 'terraform plan'
+                        break
 
-                        case 'apply':
-                            echo 'Executing Apply...'
-                            sh 'terraform apply --auto-approve'
-                            break
+                    case 'apply':
+                        echo 'Executing Apply...'
+                        sh 'terraform apply -auto-approve'
+                        break
 
-                        default:
-                            error 'Unknown action'
-                    }
+                    default:
+                        error 'Unknown action'
                 }
+
             }
         }
-
     }
+
+}
+```
+
 }
