@@ -46,7 +46,7 @@ resource "aws_instance" "my-ec2-instance" {
   ami           = var.ami_id
   key_name = var.key_name
   instance_type = var.instance_type
-  vpc_security_group_ids = [aws_security_group.jenkins-sg-2022.id]
+  security_groups = ["default"]
 
   # Set root volume size to 20 GB
   root_block_device {
