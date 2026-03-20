@@ -8,7 +8,8 @@ pipeline {
             description: 'Select the action to perform'
         )
     }
-     stages {
+
+    stages {
 
         stage('Clean') {
             steps {
@@ -16,37 +17,44 @@ pipeline {
             }
         }
 
-    stage {
         stage('Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ygminds73/Terraform-Automation.git']])
-            }
-        }
-    
-        stage ("terraform init") {
-            steps {
-                sh ("terraform init -reconfigure") 
+                checkout scmGit(
+                    branches: [[name: '*/main']],
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/ygminds73/Terraform-Automation.git']]
+                )
             }
         }
 
-        stage ("Action") {
+        stage('Terraform Init') {
+            steps {
+                sh 'rm -rf .terraform'
+                sh 'terraform init -reconfigure'
+            }
+        }
+
+        stage('Action') {
             steps {
                 script {
                     switch (params.ACTION) {
+
                         case 'plan':
                             echo 'Executing Plan...'
-                            sh "terraform plan"
+                            sh 'terraform plan'
                             break
+
                         case 'apply':
                             echo 'Executing Apply...'
-                            sh "terraform apply --auto-approve"
+                            sh 'terraform apply --auto-approve'
                             break
+
                         default:
                             error 'Unknown action'
                     }
                 }
             }
         }
+
     }
-}
 }
