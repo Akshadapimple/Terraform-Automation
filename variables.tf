@@ -8,11 +8,11 @@ variable "key_name" {
     default     =  "jenkins-server-1" 
 }
 
-variable "instance_type" { 
+//variable "instance_type" { 
     description = "instance type for ec2" 
     default     =  "t2.micro" 
 }
-
+//
 variable "security_group" { 
     description = "Name of security group" 
     default     = "jenkins-sgroup-dec-2021" 
