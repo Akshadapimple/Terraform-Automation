@@ -46,7 +46,6 @@ resource "aws_instance" "my-ec2-instance" {
   ami           = var.ami_id
   key_name = var.key_name
   instance_type = var.instance_type
-  subnet_id = aws_subnet.my_subnet.id
   vpc_security_group_ids = [aws_security_group.jenkins-sg-2022.id]
 
   # Set root volume size to 20 GB
