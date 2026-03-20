@@ -36,7 +36,7 @@ stages {
 
             export AWS_DEFAULT_REGION=us-east-1
 
-            terraform init -reconfigure -migrate-state
+            terraform init -migrate-state
             '''
         }
     }
